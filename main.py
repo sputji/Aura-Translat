@@ -450,8 +450,12 @@ class AuraTraductionApp:
                     service.default_srt_output_path(output_path),
                     artifacts.srt_output,
                 )
+                saved_confidence = service.save_srt_confidence_sidecar(
+                    service.default_srt_confidence_output_path(saved_srt),
+                    service.build_srt_confidence_sidecar(artifacts.translated_segments),
+                )
                 self._last_media_srt_path = saved_srt
-                self.bridge.media_done.emit(f"{saved_txt}||{saved_srt}")
+                self.bridge.media_done.emit(f"{saved_txt}||{saved_srt}||{saved_confidence}")
             except Exception as exc:  # pylint: disable=broad-exception-caught
                 logger.exception("Erreur traitement fichier media: %s", exc)
                 self.bridge.media_error.emit(f"Echec traduction fichier: {exc}")
@@ -485,7 +489,7 @@ class AuraTraductionApp:
             self._media_progress_dialog.setLabelText(step)
 
     def _on_media_done(self, saved_paths: str) -> None:
-        txt_path, srt_path = self._split_saved_paths(saved_paths)
+        txt_path, srt_path, confidence_path = self._split_saved_paths(saved_paths)
         if self._media_progress_dialog is not None:
             self._media_progress_dialog.setValue(100)
             self._media_progress_dialog.setLabelText("Traitement termine.")
@@ -494,13 +498,16 @@ class AuraTraductionApp:
 
         self._media_cancel_event = None
         self.bridge.translated.emit("Traduction fichier terminee.")
-        self.bridge.status.emit(f"Fichier traduit et exporte: {txt_path} (SRT: {srt_path})")
+        self.bridge.status.emit(
+            f"Fichier traduit et exporte: {txt_path} (SRT: {srt_path}, Confiance: {confidence_path})"
+        )
         QMessageBox.information(
             self.overlay,
             "Traduction fichier",
             "Traduction terminee.\n"
             f"TXT exporte:\n{txt_path}\n\n"
-            f"SRT exporte:\n{srt_path}",
+            f"SRT exporte:\n{srt_path}\n\n"
+            f"Metadonnees confiance:\n{confidence_path}",
         )
 
     def _on_media_error(self, message: str) -> None:
@@ -520,11 +527,13 @@ class AuraTraductionApp:
         logger.error("Erreur media: %s", message)
 
     @staticmethod
-    def _split_saved_paths(saved_paths: str) -> tuple[str, str]:
-        parts = saved_paths.split("||", maxsplit=1)
+    def _split_saved_paths(saved_paths: str) -> tuple[str, str, str]:
+        parts = saved_paths.split("||")
+        if len(parts) >= 3:
+            return parts[0], parts[1], parts[2]
         if len(parts) == 2:
-            return parts[0], parts[1]
-        return saved_paths, ""
+            return parts[0], parts[1], ""
+        return saved_paths, "", ""
 
     def open_vlc_player(self) -> None:
         logger.info("Ouverture lecteur VLC demandee")

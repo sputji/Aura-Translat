@@ -222,9 +222,24 @@ class MediaTranslationService:
             end = MediaTranslationService._format_srt_time(end_value)
             rows.append(str(idx))
             rows.append(f"{start} --> {end}")
-            rows.append(f"[Confiance {int(round(confidence * 100))}%] {translated_text.strip()}")
+            # Keep SRT payload strict and simple for broad player compatibility.
+            rows.append(translated_text.strip())
             rows.append("")
         return "\n".join(rows).strip()
+
+    @staticmethod
+    def build_srt_confidence_sidecar(translated_timed: list[tuple[TimedSegment, str, float]]) -> str:
+        lines: list[str] = [
+            "Aura-Translat SRT Confidence Metadata",
+            "Format: index | start --> end | confidence_percent",
+            "",
+        ]
+        for idx, (timed_segment, _translated_text, confidence) in enumerate(translated_timed, start=1):
+            start = MediaTranslationService._format_srt_time(timed_segment.start)
+            end_value = timed_segment.end if timed_segment.end > timed_segment.start else timed_segment.start + 1.2
+            end = MediaTranslationService._format_srt_time(end_value)
+            lines.append(f"{idx} | {start} --> {end} | {int(round(confidence * 100))}%")
+        return "\n".join(lines).strip()
 
     @staticmethod
     def _estimate_confidence(source_segment: str, translated_segment: str) -> float:
@@ -277,4 +292,16 @@ class MediaTranslationService:
         path = Path(output_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(srt_text, encoding="utf-8")
+        return path
+
+    @staticmethod
+    def default_srt_confidence_output_path(output_srt_path: str | Path) -> Path:
+        srt_path = Path(output_srt_path)
+        return srt_path.with_suffix(".confidence.txt")
+
+    @staticmethod
+    def save_srt_confidence_sidecar(output_path: str | Path, metadata_text: str) -> Path:
+        path = Path(output_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(metadata_text, encoding="utf-8")
         return path

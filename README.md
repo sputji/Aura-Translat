@@ -1,6 +1,6 @@
 # Aura-Translat
 
-![Version](https://img.shields.io/badge/version-0.1.4-0a7ea4)
+![Version](https://img.shields.io/badge/version-1.0.0-0a7ea4)
 ![Statut](https://img.shields.io/badge/statut-production-1f9d57)
 ![Plateforme](https://img.shields.io/badge/plateforme-Windows%2010%2F11-2f6db0)
 ![Stack](https://img.shields.io/badge/stack-Python%20%2B%20PyQt6-3f8c3a)
@@ -14,7 +14,7 @@ Application desktop de sous-titrage et traduction en direct, optimisee pour un u
 - 🔊 Capture audio systeme ou URL live (YouTube/Twitch/autres flux compatibles)
 - 🌍 Traduction multi-langues configurable (source + cible)
 - 🧩 Modeles Ollama separes pour live et fichier, recommandation adaptative
-- 📄 Traduction audio/video avec export TXT + SRT + score de confiance segment
+- 📄 Traduction audio/video avec export TXT + SRT (compatible lecteurs tiers) + metadata confiance en fichier dedie
 - ⌨️ Raccourcis persistants + hotkeys globaux (meme overlay masque)
 - ▶️ Lecteur VLC integre avec commandes en icones
 
@@ -62,7 +62,7 @@ python main.py
 
 Installeur genere:
 
-- `dist-installer/Aura-Translat-installer-0.1.4.exe`
+- `dist-installer/Aura-Translat-installer-1.0.0.exe`
 
 ## Prerequis runtime
 
@@ -84,6 +84,7 @@ Installeur genere:
 - Developpeur: Nicolas
 - Copyright: (c) 2026 AuraNeo. Tous droits reserves.
 - Cadre juridique: logiciel exploite sous droit francais et droit europeen.
+- Fichiers juridiques dedies: `COPYRIGHT.md` et `LEGAL-FR-EU.md`
 
 Note: ces mentions sont informatives dans ce README et ne remplacent pas un avis juridique professionnel.
 

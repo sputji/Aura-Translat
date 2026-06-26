@@ -1,7 +1,7 @@
 ; Aura-Translat installer script for Inno Setup
 
 #define MyAppName "Aura-Translat"
-#define MyAppVersion "0.1.4"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "Aura Neo"
 #define MyAppURL "https://auraneo.fr"
 #define MyAppExeName "Aura-Translat.exe"
