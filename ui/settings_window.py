@@ -214,11 +214,20 @@ class SettingsWindow(QDialog):
         model_row = QHBoxLayout()
         model_row.addWidget(self._model_combo, stretch=1)
         model_row.addWidget(self._refresh_models_btn)
-        translation_layout.addRow("Modele Live ?", model_row)
+        translation_layout.addRow("Modele Live (temps reel) ?", model_row)
 
         file_model_row = QHBoxLayout()
         file_model_row.addWidget(self._file_model_combo, stretch=1)
-        translation_layout.addRow("Modele Fichier ?", file_model_row)
+        translation_layout.addRow("Modele Fichier (audio/video) ?", file_model_row)
+
+        self._live_model_state_label = QLabel("Etat live: -")
+        self._file_model_state_label = QLabel("Etat fichier: -")
+        self._live_model_state_label.setWordWrap(True)
+        self._file_model_state_label.setWordWrap(True)
+        self._live_model_state_label.setStyleSheet("font-size: 12px; color: #9fd0ff;")
+        self._file_model_state_label.setStyleSheet("font-size: 12px; color: #9fd0ff;")
+        translation_layout.addRow(self._live_model_state_label)
+        translation_layout.addRow(self._file_model_state_label)
 
         profiles_group = QGroupBox("Profils rapides")
         profiles_layout = QVBoxLayout(profiles_group)
@@ -245,6 +254,11 @@ class SettingsWindow(QDialog):
         self._profile_summary_label.setWordWrap(True)
         self._profile_summary_label.setStyleSheet("font-size: 12px;")
         profiles_layout.addWidget(self._profile_summary_label)
+
+        self._stt_diagnostic_label = QLabel()
+        self._stt_diagnostic_label.setWordWrap(True)
+        self._stt_diagnostic_label.setStyleSheet("font-size: 12px; color: #b2beca;")
+        profiles_layout.addWidget(self._stt_diagnostic_label)
 
         overlay_group = QGroupBox("Overlay (affichage)")
         overlay_layout = QFormLayout(overlay_group)
@@ -386,6 +400,7 @@ class SettingsWindow(QDialog):
 
         self._bind_preview_events()
         self._configure_help_tooltips()
+        self._bind_form_events()
         self._apply_preview_style()
         self._refresh_audio_devices()
         self._refresh_ollama_models(silent=True)
@@ -417,6 +432,18 @@ class SettingsWindow(QDialog):
         self._font_size_spin.valueChanged.connect(self._apply_preview_style)
         self._font_bold_checkbox.stateChanged.connect(self._apply_preview_style)
         self._max_lines_spin.valueChanged.connect(self._apply_preview_style)
+
+    def _bind_form_events(self) -> None:
+        self._stt_model_combo.currentTextChanged.connect(self._on_stt_model_changed)
+        self._source_combo.currentTextChanged.connect(self._on_language_pair_changed)
+        self._target_combo.currentTextChanged.connect(self._on_language_pair_changed)
+
+    def _on_stt_model_changed(self, _value: str) -> None:
+        self._update_stt_diagnostic()
+
+    def _on_language_pair_changed(self, _value: str) -> None:
+        # Keep recommendation badges coherent with current source/target languages.
+        self._refresh_ollama_models(silent=True)
 
     def _refresh_audio_devices(self) -> None:
         current_value = self._audio_device_combo.currentText().strip() or self._config.audio.input_device.strip()
@@ -585,6 +612,7 @@ class SettingsWindow(QDialog):
 
         live_missing = recommendations.get("live_missing_suggestion", "")
         file_missing = recommendations.get("file_missing_suggestion", "")
+        self._update_model_state_labels(recommended_live, recommended_file, live_missing, file_missing)
         if not silent:
             self._prompt_install_missing_recommended_models(live_missing, file_missing, model_names)
 
@@ -689,6 +717,39 @@ class SettingsWindow(QDialog):
             f"live={self._current_model_value() or '-'} | file={self._current_file_model_value() or '-'} | "
             f"vitesse={self._display_speed_combo.currentText()} | lignes={self._max_lines_spin.value()}"
         )
+        self._update_stt_diagnostic()
+
+    def _update_stt_diagnostic(self) -> None:
+        stt_model = self._stt_model_combo.currentText().strip().lower()
+        diagnostics = {
+            "tiny": "Diagnostic STT: priorite vitesse, ideal live faible latence, precision plus faible.",
+            "base": "Diagnostic STT: profil equilibre vitesse/qualite pour usage quotidien.",
+            "small": "Diagnostic STT: precision amelioree, CPU plus sollicite.",
+            "medium": "Diagnostic STT: meilleure qualite de transcription, latence et charge plus elevees.",
+        }
+        message = diagnostics.get(stt_model, "Diagnostic STT: modele non reconnu.")
+        self._stt_diagnostic_label.setText(message)
+
+    def _update_model_state_labels(
+        self,
+        recommended_live: str,
+        recommended_file: str,
+        live_missing: str,
+        file_missing: str,
+    ) -> None:
+        selected_live = self._current_model_value() or "-"
+        selected_file = self._current_file_model_value() or "-"
+
+        live_status = f"Etat live: selection={selected_live} | recommande={recommended_live or '-'}"
+        file_status = f"Etat fichier: selection={selected_file} | recommande={recommended_file or '-'}"
+
+        if live_missing:
+            live_status += f" | manquant propose={live_missing}"
+        if file_missing:
+            file_status += f" | manquant propose={file_missing}"
+
+        self._live_model_state_label.setText(live_status)
+        self._file_model_state_label.setText(file_status)
 
     def _available_model_values(self) -> list[str]:
         values: list[str] = []
@@ -775,6 +836,10 @@ class SettingsWindow(QDialog):
         self._font_bold_checkbox.setToolTip("Active/desactive le texte gras.")
         self._display_speed_combo.setToolTip("Vitesse d'affichage des lignes a l'ecran.")
         self._max_lines_spin.setToolTip("Nombre maximal de lignes conservees dans l'overlay.")
+        self._profile_summary_label.setToolTip("Resume rapide des reglages actifs du profil.")
+        self._stt_diagnostic_label.setToolTip("Aide STT: explique le compromis vitesse/precision du modele choisi.")
+        self._live_model_state_label.setToolTip("Etat du modele live: selection actuelle, recommandation et manquant eventuel.")
+        self._file_model_state_label.setToolTip("Etat du modele fichier: selection actuelle, recommandation et manquant eventuel.")
 
     def _save_and_close(self) -> None:
         if str(self._audio_source_combo.currentData() or "system") == "url":
