@@ -84,7 +84,7 @@ Installeur genere:
 - Developpeur: Nicolas
 - Copyright: (c) 2026 AuraNeo. Tous droits reserves.
 - Cadre juridique: logiciel exploite sous droit francais et droit europeen.
-- Fichiers juridiques dedies: `COPYRIGHT.md` et `LEGAL-FR-EU.md`
+- Fichiers juridiques dedies: `LEGAL/COPYRIGHT.md` et `LEGAL/LEGAL-FR-EU.md`
 
 Note: ces mentions sont informatives dans ce README et ne remplacent pas un avis juridique professionnel.
 
