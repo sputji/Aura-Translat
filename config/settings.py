@@ -39,7 +39,7 @@ def _default_translation_system_prompt() -> str:
 @dataclass
 class AppMetadata:
     name: str = "Aura-Translat"
-    version: str = "1.0.0"
+    version: str = "1.0.1"
     developer: str = "Nicolas"
     company: str = "Aura Neo"
     website: str = "https://auraneo.fr"

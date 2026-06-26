@@ -1,6 +1,6 @@
 # Aura-Translat
 
-![Version](https://img.shields.io/badge/version-1.0.0-0a7ea4)
+![Version](https://img.shields.io/badge/version-1.0.1-0a7ea4)
 ![Statut](https://img.shields.io/badge/statut-production-1f9d57)
 ![Plateforme](https://img.shields.io/badge/plateforme-Windows%2010%2F11-2f6db0)
 ![Stack](https://img.shields.io/badge/stack-Python%20%2B%20PyQt6-3f8c3a)
@@ -62,7 +62,7 @@ python main.py
 
 Installeur genere:
 
-- `dist-installer/Aura-Translat-installer-1.0.0.exe`
+- `dist-installer/Aura-Translat-installer-1.0.1.exe`
 
 ## Prerequis runtime
 

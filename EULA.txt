@@ -1,0 +1,67 @@
+AURA-TRANSLAT - CONTRAT DE LICENCE UTILISATEUR FINAL (CLUF / EULA)
+Version: 1.0.1
+Date: 2026-06-27
+
+IMPORTANT
+En installant, copiant, accedant ou utilisant le logiciel Aura-Translat, vous acceptez
+les presentes conditions. Si vous n'acceptez pas ces conditions, n'installez pas le
+logiciel et annulez l'installation.
+
+1. EDITEUR ET PROPRIETE INTELLECTUELLE
+- Editeur et proprietaire: AuraNeo (https://auraneo.fr)
+- Developpeur principal: Nicolas
+- Copyright: (c) 2026 AuraNeo. Tous droits reserves.
+
+Le logiciel, son code source, ses ressources, ses interfaces, sa documentation et ses
+composants associes sont proteges par le droit de la propriete intellectuelle.
+Toute reproduction, extraction, modification, adaptation, traduction, distribution ou
+mise a disposition, totale ou partielle, sans autorisation ecrite prealable de
+AuraNeo est interdite, sauf dispositions legales imperatives.
+
+2. OBJET DE LA LICENCE
+AuraNeo vous accorde une licence personnelle, non exclusive, non cessible et
+revocable d'utiliser Aura-Translat, uniquement conformement au present EULA.
+
+3. CONDITIONS D'UTILISATION
+Vous vous engagez a:
+- utiliser le logiciel conformement aux lois applicables;
+- ne pas contourner les mecanismes techniques de protection;
+- ne pas redistribuer le logiciel sans autorisation ecrite d'AuraNeo.
+
+4. DONNEES PERSONNELLES ET CONFIDENTIALITE (RGPD)
+Aura-Translat privilegie un traitement local:
+- transcription locale (STT) via faster-whisper;
+- traduction locale via Ollama (lorsqu'il est configure en local).
+
+Sauf configuration specifique externe choisie par l'utilisateur, AuraNeo ne collecte
+pas vos contenus audio/textes via ce logiciel.
+
+Mode URL stream:
+si vous utilisez des flux tiers (ex: YouTube, Twitch), vous etes seul responsable du
+respect des droits, conditions d'usage et obligations legales associes a ces services.
+
+5. LIMITATION DE GARANTIE
+Le logiciel est fourni "en l'etat", sans garantie expresse ou implicite, notamment
+sans garantie de performance, de disponibilite continue ou d'adequation a un besoin
+particulier.
+
+6. LIMITATION DE RESPONSABILITE
+Dans les limites autorisees par la loi, AuraNeo ne pourra etre tenue responsable des
+prejudices directs ou indirects (perte de donnees, perte d'exploitation, manque a
+gagner, interruption d'activite, etc.) lies a l'utilisation ou a l'impossibilite
+d'utiliser le logiciel.
+
+7. DUREE, RESILIATION
+La licence prend effet a l'installation et reste valable tant que vous respectez les
+presentes conditions. AuraNeo peut suspendre ou resilier la licence en cas de
+violation du present EULA.
+
+8. DROIT APPLICABLE ET JURIDICTION
+Le present EULA est soumis au droit francais et au droit europeen applicable.
+Sous reserve des regles d'ordre public, les litiges relevent de la competence des
+juridictions francaises.
+
+9. CONTACT
+Site: https://auraneo.fr
+
+FIN DU CONTRAT DE LICENCE

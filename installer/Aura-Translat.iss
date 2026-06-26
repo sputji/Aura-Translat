@@ -1,7 +1,7 @@
 ; Aura-Translat installer script for Inno Setup
 
 #define MyAppName "Aura-Translat"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "Aura Neo"
 #define MyAppURL "https://auraneo.fr"
 #define MyAppExeName "Aura-Translat.exe"
@@ -17,7 +17,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={code:GetDefaultInstallDir}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=
+LicenseFile=..\EULA.txt
 InfoBeforeFile=
 InfoAfterFile=
 OutputDir=..\dist-installer
@@ -38,6 +38,9 @@ ArchitecturesInstallIn64BitMode=x64compatible
 
 [Languages]
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
+
+[Messages]
+LicenseAccepted=J'&accepte les termes du contrat de licence
 
 [Tasks]
 Name: "desktopicon"; Description: "Creer un raccourci sur le Bureau"; GroupDescription: "Raccourcis:"
